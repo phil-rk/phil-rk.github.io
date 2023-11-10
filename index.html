@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        canvas {
+            display: block;
+        }
+    </style>
+    <title>Target Shooting Game</title>
+</head>
+<body>
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+
+    <script>
+        // Get the canvas element and its context
+        var canvas = document.getElementById("gameCanvas");
+        var ctx = canvas.getContext("2d");
+
+        // Set up initial game state
+        var score = 0;
+        var targetRadius = 30;
+        var targetX = canvas.width / 2;
+        var targetY = canvas.height / 2;
+
+        // Add a click event listener to the canvas
+        canvas.addEventListener("click", shoot);
+
+        // Function to handle the shooting event
+        function shoot(event) {
+            // Calculate the distance from the click to the center of the target
+            var distance = Math.sqrt(
+                Math.pow(event.clientX - targetX, 2) + Math.pow(event.clientY - targetY, 2)
+            );
+
+            // Check if the click is within the target radius
+            if (distance < targetRadius) {
+                // Increment the score and reset the target position
+                score++;
+                targetX = Math.random() * canvas.width;
+                targetY = Math.random() * canvas.height;
+                draw();
+            }
+        }
+
+        // Function to draw the game elements
+        function draw() {
+            // Clear the canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw the target
+            ctx.beginPath();
+            ctx.arc(targetX, targetY, targetRadius, 0, 2 * Math.PI);
+            ctx.fillStyle = "red";
+            ctx.fill();
+            ctx.closePath();
+
+            // Draw the score
+            ctx.font = "30px Arial";
+            ctx.fillStyle = "black";
+            ctx.fillText("Score: " + score, 10, 30);
+        }
+
+        // Initial draw
+        draw();
+    </script>
+</body>
+</html>
