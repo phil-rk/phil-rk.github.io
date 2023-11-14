@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Game Menu</title>
+</head>
+<body>
+  <h1>Game Menu</h1>
+  
+  <ul id="gameList">
+    <!-- Games will be listed here -->
+  </ul>
+
+  <script>
+    // Function to fetch all games in the folder
+    function loadGames() {
+      const gameList = document.getElementById("gameList");
+
+      // List of predefined games
+      const games = [
+        { name: "Snake", file: "Snake.html" }, // Modify file name if needed
+        // Add more games in a similar format if available in the folder
+      ];
+
+      games.forEach(game => {
+        const listItem = document.createElement('li');
+        const gameLink = document.createElement('a');
+        gameLink.textContent = game.name;
+        gameLink.href = game.file;
+        listItem.appendChild(gameLink);
+        gameList.appendChild(listItem);
+      });
+    }
+
+    // Load games when the page loads
+    window.onload = loadGames;
+  </script>
+</body>
+</html>
