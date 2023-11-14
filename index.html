@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Game Menu</title>
+</head>
+<body>
+  <h1>Game Menu</h1>
+  
+  <ul id="gameList">
+    <!-- Games will be listed here -->
+  </ul>
+
+  <script>
+    // Function to fetch all games in the folder
+    function loadGames() {
+      const gameList = document.getElementById("gameList");
+
+      // List of predefined games
+      const games = [
+	{ name: "2048", file: "Games/2048/index.html" },
+	{ name: "Hextris", file: "Games/hextris-gh/index.html" },
+	{ name: "Last Colony", file: "Games/last-colony/index.html" },
+	{ name: "React simon-says", file: "Games/react-simon-says/index.html" },
+	{ name: "grid garden", file: "Games/gridgarden/index.html" },
+	{ name: "breaklock", file: "Games/breaklock/index.html" },
+	{ name: "Ancient Beast", file: "Games/AncientBeast/index.html" },
+	{ name: "Clash", file: "Games/clash/index.html" },
+	{ name: "Flexboxfroggy", file: "Games/flexboxfroggy/index.html" },
+	{ name: "Quantum Game", file: "Games/quantum-game/index.html" },
+	{ name: "Radius Raid", file: "Games/radius-raid/index.html" },
+	{ name: "Op Hog", file: "Games/OpHog/index.html" },
+      ];
+
+      games.forEach(game => {
+        const listItem = document.createElement('li');
+        const gameLink = document.createElement('a');
+        gameLink.textContent = game.name;
+        gameLink.href = game.file;
+        listItem.appendChild(gameLink);
+        gameList.appendChild(listItem);
+      });
+    }
+
+    // Load games when the page loads
+    window.onload = loadGames;
+  </script>
+</body>
+</html>
