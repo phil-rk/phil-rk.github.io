@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<script>
+    
+    const games = [
+      { name: "2048", category: "Puzzle", file: "Games/2048/index.html", image: "https://via.placeholder.com/200" },
+      { name: "Hextris", category: "Puzzle", file: "Games/hextris-gh/index.html", image: "https://via.placeholder.com/200" },
+      { name: "Last Colony", category: "Strategy", file: "Games/last-colony/index.html", image: "https://via.placeholder.com/200" },
+      { name: "grid garden", category: "Puzzle", file: "Games/gridgarden/index.html", image: "https://via.placeholder.com/200" },
+      { name: "breaklock", category: "Strategy", file: "Games/breaklock/index.html", image: "https://via.placeholder.com/200" },
+      { name: "Flexboxfroggy", category: "Puzzle", file: "Games/flexboxfroggy/index.html", image: "https://via.placeholder.com/200" },
+      { name: "Quantum Game", category: "Strategy", file: "Games/quantum-game/index.html", image: "https://via.placeholder.com/200" },
+      { name: "Radius Raid", category: "Action", file: "Games/radius-raid/index.html", image: "https://via.placeholder.com/200" },
+      { name: "Tower Game", category: "Strategy", file: "Games/tower_game/index.html", image: "https://via.placeholder.com/200" },
+      { name: "Space Company", category: "Strategy", file: "Games/SpaceCompany/index.html", image: "https://via.placeholder.com/200" },
+      { name: "Browser Quest", category: "MMORPG", file: "Games/BrowserQuest/client/index.html", image: "https://via.placeholder.com/200" },
+	{ name: "asdt", category: "MMORPG", file: "Games/Hole.io.html", image: "https://via.placeholder.com/200" },
+    ];
+
+</script>
+
+  <meta charset="UTF-8">
+  <title>Game Menu</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      background-color: #333;
+      color: white;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    #header {
+      background-color: #111;
+      color: white;
+      padding: 10px;
+      text-align: left;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+    }
+
+    #logo {
+      float: left;
+      margin-right: 20px;
+      font-size: 20px;
+      border-radius: 50%;
+      overflow: hidden;
+      width: 40px;
+      height: 40px;
+    }
+
+    #logo img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 50%;
+    }
+
+    #homeButton {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      background-color: #333;
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    #homeButton:hover {
+      text-decoration: underline;
+    }
+
+    #searchInput {
+      margin: 20px;
+      padding: 10px;
+      width: 200px;
+    }
+
+    #searchButton {
+      padding: 10px 15px;
+      background-color: #333;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    #gameList {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 80px;
+    }
+
+    .gameBox {
+      border: 1px solid #ddd;
+      margin: 10px;
+      padding: 15px;
+      width: 200px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .gameImage {
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 10px;
+    }
+
+    #suggestions {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      margin-top: 20px;
+      padding: 10px;
+    }
+
+    .suggestionBox {
+      border: 1px solid #ddd;
+      margin: 10px;
+      padding: 10px;
+      width: 150px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    #gameFrame {
+      width: 70%;
+  height: 80vh;
+  border: none;
+  margin: 20px auto; 
+  display: none; 
+  position: fixed; 
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1002; 
+    }
+
+    #suggestionsFrame {
+      width: 30%;
+      height: 80vh;
+      border: none;
+      overflow: auto;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <input type="text" id="searchInput" placeholder="Search for games...">
+  <button id="searchButton" onclick="searchGames()">Search</button>
+
+  <a id="homeButton" href="#" onclick="goHome()">Home</a>
+
+  <h1>Game Menu</h1>
+  
+  <ul id="gameList">
+    
+  </ul>
+
+  <iframe id="gameFrame" title="Game Frame"></iframe>
+  <iframe id="suggestionsFrame" title="Suggestions Frame"></iframe>
+
+  <script>
+
+    let gamesLoaded = false;
+
+    function loadGames(gameArray) {
+      const gameList = document.getElementById("gameList");
+
+      gameArray.forEach(game => {
+        const listItem = document.createElement('li');
+        const gameBox = document.createElement('div');
+        gameBox.classList.add('gameBox');
+
+        const gameLink = document.createElement('a');
+        gameLink.textContent = game.name;
+        gameLink.href = "#";
+        gameLink.onclick = () => openGamePage(game);
+
+        const gameImage = document.createElement('img');
+        gameImage.src = game.image;
+        gameImage.alt = game.name;
+        gameImage.classList.add('gameImage');
+
+        gameBox.appendChild(gameImage);
+        gameBox.appendChild(gameLink);
+        listItem.appendChild(gameBox);
+        gameList.appendChild(listItem);
+      });
+
+     
+      gamesLoaded = true;
+    }
+
+    function searchGames() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+
+      let filteredGames;
+      if (searchTerm.includes("games")) {
+        const category = searchTerm.replace("games", "").trim();
+        filteredGames = games.filter(game => 
+          game.category.toLowerCase() === category.toLowerCase()
+        );
+      } else {
+        filteredGames = games.filter(game => 
+          game.name.toLowerCase().includes(searchTerm) || game.category.toLowerCase().includes(searchTerm)
+        );
+      }
+
+      const gameList = document.getElementById("gameList");
+      gameList.innerHTML = "";
+      
+      loadGames(filteredGames);
+      displaySuggestions(filteredGames.map(game => game.category));
+    }
+
+    function displaySuggestions(categories) {
+      const suggestionsContainer = document.getElementById("suggestionsFrame");
+      suggestionsContainer.innerHTML = "";
+
+      const uniqueCategories = [...new Set(categories)];
+
+      uniqueCategories.forEach(category => {
+        const suggestionBox = document.createElement('div');
+        suggestionBox.classList.add('suggestionBox');
+        suggestionBox.textContent = category;
+        suggestionBox.onclick = () => filterByCategory(category);
+
+        suggestionsContainer.appendChild(suggestionBox);
+      });
+    }
+
+    function filterByCategory(category) {
+      const filteredByCategory = games.filter(game => game.category.toLowerCase() === category.toLowerCase());
+      loadGames(filteredByCategory);
+    }
+
+    function goHome() {
+      
+      if (!gamesLoaded) {
+        loadGames(games);
+      }
+
+      
+      const gameFrame = document.getElementById("gameFrame");
+      gameFrame.src = "about:blank";
+      gameFrame.style.display = "none";
+    }
+
+    function openGamePage(game) {
+      const gameFrame = document.getElementById("gameFrame");
+      gameFrame.src = game.file;
+      loadSuggestions(game.category);
+
+      
+      gameFrame.style.display = "block";
+
+      
+      window.history.pushState({}, game.name, `?game=${encodeURIComponent(game.name)}`);
+    }
+
+    function loadSuggestions(category) {
+      const suggestionsContainer = document.getElementById("suggestionsFrame");
+      suggestionsContainer.innerHTML = "";
+
+      const filteredByCategory = games.filter(g => g.category.toLowerCase() === category.toLowerCase());
+
+      filteredByCategory.forEach(g => {
+        const suggestionBox = document.createElement('div');
+        suggestionBox.classList.add('suggestionBox');
+        suggestionBox.textContent = g.name;
+        suggestionBox.onclick = () => openGamePage(g);
+
+        suggestionsContainer.appendChild(suggestionBox);
+      });
+    }
+
+    window.onload = function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const gameName = urlParams.get('game');
+
+      if (gameName) {
+        const selectedGame = games.find(game => game.name === gameName);
+        if (selectedGame) {
+          openGamePage(selectedGame);
+        }
+      } else {
+        loadGames(games);
+        displaySuggestions(games.map(game => game.category));
+      }
+
+      document.getElementById('searchButton').addEventListener('click', searchGames);
+    };
+  </script>
+</body>
+</html>
